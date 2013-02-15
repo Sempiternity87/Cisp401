@@ -20,14 +20,22 @@ public class ForecastTuition
   /*****************************************************************************
   * Constants
   *****************************************************************************/
-  public static final const double TUITION    = 10000;
-  public static final const double PERCENTAGE = 0.05;
+  public static final double TUITION    = 10000;
+  public static final double PERCENTAGE = 0.05;
   
   /*****************************************************************************
   * Properties
   *****************************************************************************/
   public double currentTuition = TUITION;
   public int    currentYear;
+  
+  /*****************************************************************************
+  * Constructor
+  *****************************************************************************/
+  public ForecastTuition(int year)
+    {
+    currentYear = year;
+    }
   
   /*****************************************************************************
   * totalPayment */
@@ -63,14 +71,13 @@ public class ForecastTuition
   *****************************************************************************/
   public static void main (String[] args)
     {
-    currentYear = Integer.parseInt(JOptionPane.showInputDialog("What year is it?"));
-    ForecastTuition ft = new ForecastTuition();
+    ForecastTuition ft = new ForecastTuition(Integer.parseInt(JOptionPane.showInputDialog("What year is it?")));
     
     for (int i = 0; i < 10; i++)
       ft.nextYear();
     
-    JOptionPane.showMessageDialog(String.format("The tuition will be $%.2f in the year %d.",
+    JOptionPane.showMessageDialog(null, String.format("The tuition will be $%.2f in the year %d.",
                                                 ft.currentTuition, ft.currentYear));
-    JOptionPane.showMessageDialog(String.format("The total payment for a four year stay will be %.2f", ft.totalPayment());
+    JOptionPane.showMessageDialog(null, String.format("The total payment for a four year stay will be %.2f", ft.totalPayment()));
     }
   }
