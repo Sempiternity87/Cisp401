@@ -33,6 +33,7 @@ public class TwoHighScores
   /*****************************************************************************
   * nextScore */
   /**
+  * Get the next student name and score.
   * 
   * @param  index  Index of the next student. This should be supplied by a loop
   *                from the caller.
@@ -68,12 +69,17 @@ public class TwoHighScores
   public static void main (String[] args)
     {
     TwoHighScores ths = new TwoHighScores();
-    
     ths.setStudents();
-    
+
+    /*-------------------------------------------------------*/
+    /* Continue getting scores until we have all the scores. */
+    /*-------------------------------------------------------*/
     for (int i = 0; i < ths.getStudentNumber(); i++)
       ths.nextScore(i);
-    
+
+    /*-----------------------------------*/
+    /* Figure out the two highest scores */
+    /*-----------------------------------*/
     StudentScore ss1 = null;
     StudentScore ss2 = null;
     for (StudentScore student : ths.getStudentScores())
