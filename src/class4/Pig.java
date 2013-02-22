@@ -31,21 +31,143 @@
 *******************************************************************************/
 package class4;
 
+import java.util.Scanner;
+import java.util.Random;
+
 /*******************************************************************************
 * Pig
 *******************************************************************************/
 public class Pig
   {
-  
-  
-  /*****************************************************************************
+  public static void main (String[] args)
+    {
+    Game game = new Game();
+    game.start();
+    }
+
+/*****************************************************************************
   * Class: Game */
   /**
   * 
   *****************************************************************************/
   public class Game
     {
+    /***************************************************************************
+    * Constants
+    ***************************************************************************/
+    public static final String ROLL = "roll";
+    public static final String HOLD = "hold";
     
+    /***************************************************************************
+    * Properties
+    ***************************************************************************/
+    /** Current Players. */    protected Player[] mPlayers;
+    /** Current Turn Score. */ protected int      mScore;
+    /** Input. */              protected Scanner  mInput = new Scanner(System.in);
+    /** Current Turn. */       protected int      mTurn;
+    
+    /*-----------*/
+    /* Accessors */
+    /*-----------*/
+    /** Current Player. */ public Player getCurrentPlayer() { return mPlayers[mTurn % 2]; }
+    
+    /***************************************************************************
+    * Constructor
+    ***************************************************************************/
+    public Game()
+      {
+      System.out.println("What's your name? ");
+      mPlayers    = new Player[2];
+      mPlayers[0] = new Player(mInput.nextLine(), true);
+      mPlayers[1] = new Player("Computer");
+      mScore      = 0;
+      mTurn       = 0;
+      }
+    
+    /***************************************************************************
+    * checkForWinner */
+    /**
+    * 
+    ***************************************************************************/
+    public boolean checkForWinner()
+      {
+      for (Player p : mPlayers)
+        if (p.score >= 100)
+          return true;
+      
+      return false;
+      }
+    
+    /***************************************************************************
+    * endTurn */
+    /**
+    * The turn has ended so we need to add the turn score to the current player
+    * and reset the score.
+    ***************************************************************************/
+    public boolean endTurn()
+      {
+      getCurrentPlayer().score += mScore;
+      mScore = 0;
+      
+      if (checkForWinner())
+        return true;
+      
+      mTurn++;
+      return false;
+      }
+    
+    /***************************************************************************
+    * rollDice */
+    /**
+    * 
+    ***************************************************************************/
+    public boolean rollDice()
+      {
+      int rolledNumber = new Random().nextInt(6) + 1;
+      if (rolledNumber == 1)
+        {
+        mScore = 0;
+        return endTurn();
+        }
+      
+      mScore += rolledNumber;
+      return startTurn();
+      }
+    
+    /***************************************************************************
+    * start */
+    /**
+    * 
+    ***************************************************************************/
+    public void start()
+      {
+      while (!startTurn()) {}
+      }
+    
+    /***************************************************************************
+    * startTurn */
+    /**
+    * Player makes decision to roll or hold.
+    ***************************************************************************/
+    public boolean startTurn()
+      {
+      boolean roll;
+      
+      //TODO move this decision to the Player class.
+      if (getCurrentPlayer().human)
+        {
+        System.out.println("Would you like to \"roll\" or \"hold\"?");
+        roll = mInput.next().equals(ROLL);
+        }
+      else
+        {
+        //TODO run through the ai.
+        roll = true;
+        }
+      
+      if (roll) return rollDice();
+                return endTurn();
+      }
     }
   
   /*****************************************************************************
