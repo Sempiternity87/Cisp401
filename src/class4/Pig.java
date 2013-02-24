@@ -44,157 +44,181 @@ public class Pig
     Game game = new Game();
     game.start();
     }
+  }
 
-/*****************************************************************************
-  * Class: Game */
-  /**
-  * 
-  *****************************************************************************/
-  public class Game
+/*******************************************************************************
+* Class: Game */
+/**
+* 
+*******************************************************************************/
+class Game
+  {
+  /*******************************************************************************
+  * Constants
+  *******************************************************************************/
+  public static final String ROLL = "roll";
+  public static final String HOLD = "hold";
+  
+  /*******************************************************************************
+  * Properties
+  *******************************************************************************/
+  /** Current Players. */    protected Player[] mPlayers;
+  /** Current Turn Score. */ protected int      mTurnScore;
+  /** Input. */              protected Scanner  mInput = new Scanner(System.in);
+  /** Current Turn. */       protected int      mTurn;
+  
+  /*-----------*/
+  /* Accessors */
+  /*-----------*/
+  /** Current Player. */ public Player getCurrentPlayer() { return mPlayers[mTurn % 2]; }
+  
+  /*******************************************************************************
+  * Constructor
+  *******************************************************************************/
+  public Game()
     {
-    /***************************************************************************
-    * Constants
-    ***************************************************************************/
-    public static final String ROLL = "roll";
-    public static final String HOLD = "hold";
-    
-    /***************************************************************************
-    * Properties
-    ***************************************************************************/
-    /** Current Players. */    protected Player[] mPlayers;
-    /** Current Turn Score. */ protected int      mScore;
-    /** Input. */              protected Scanner  mInput = new Scanner(System.in);
-    /** Current Turn. */       protected int      mTurn;
-    
-    /*-----------*/
-    /* Accessors */
-    /*-----------*/
-    /** Current Player. */ public Player getCurrentPlayer() { return mPlayers[mTurn % 2]; }
-    
-    /***************************************************************************
-    * Constructor
-    ***************************************************************************/
-    public Game()
-      {
-      System.out.println("What's your name? ");
-      mPlayers    = new Player[2];
-      mPlayers[0] = new Player(mInput.nextLine(), true);
-      mPlayers[1] = new Player("Computer");
-      mScore      = 0;
-      mTurn       = 0;
-      }
-    
-    /***************************************************************************
-    * checkForWinner */
-    /**
-    * 
-    ***************************************************************************/
-    public boolean checkForWinner()
-      {
-      for (Player p : mPlayers)
-        if (p.score >= 100)
-          return true;
-      
-      return false;
-      }
-    
-    /***************************************************************************
-    * endTurn */
-    /**
-    * The turn has ended so we need to add the turn score to the current player
-    * and reset the score.
-    ***************************************************************************/
-    public boolean endTurn()
-      {
-      getCurrentPlayer().score += mScore;
-      mScore = 0;
-      
-      if (checkForWinner())
-        return true;
-      
-      mTurn++;
-      return false;
-      }
-    
-    /***************************************************************************
-    * rollDice */
-    /**
-    * 
-    ***************************************************************************/
-    public boolean rollDice()
-      {
-      int rolledNumber = new Random().nextInt(6) + 1;
-      if (rolledNumber == 1)
-        {
-        mScore = 0;
-        return endTurn();
-        }
-      
-      mScore += rolledNumber;
-      return startTurn();
-      }
-    
-    /***************************************************************************
-    * start */
-    /**
-    * 
-    ***************************************************************************/
-    public void start()
-      {
-      while (!startTurn()) {}
-      }
-    
-    /***************************************************************************
-    * startTurn */
-    /**
-    * Player makes decision to roll or hold.
-    ***************************************************************************/
-    public boolean startTurn()
-      {
-      boolean roll;
-      
-      //TODO move this decision to the Player class.
-      if (getCurrentPlayer().human)
-        {
-        System.out.println("Would you like to \"roll\" or \"hold\"?");
-        roll = mInput.next().equals(ROLL);
-        }
-      else
-        {
-        //TODO run through the ai.
-        roll = true;
-        }
-      
-      if (roll) return rollDice();
-                return endTurn();
-      }
+    System.out.print("What's your name? ");
+    mPlayers    = new Player[2];
+    mPlayers[0] = new Player(mInput.nextLine(), true);
+    mPlayers[1] = new Player("Computer");
+    mTurnScore  = 0;
+    mTurn       = 0;
     }
   
-  /*****************************************************************************
-  * Class: Player */
+  /*******************************************************************************
+  * checkForWinner */
   /**
   * 
-  *****************************************************************************/
-  public class Player
+  *******************************************************************************/
+  public boolean checkForWinner()
     {
-    /***************************************************************************
-    * Properties
-    ***************************************************************************/
-    /** Player is human flag. */ public boolean human;
-    /** Player's name. */        public String  name;
-    /** Player's total score. */ public int     score;
+    for (Player p : mPlayers)
+      if (p.score >= 100)
+        return true;
     
-    /***************************************************************************
-    * Constructor */
-    /**
-    * 
-    * 
-    * @param name
-    ***************************************************************************/
-    public Player(String name) { this(name, false); }
-    public Player(String name, boolean human)
+    return false;
+    }
+  
+  /*******************************************************************************
+  * endTurn */
+  /**
+  * The turn has ended so we need to add the turn score to the current player
+  * and reset the score.
+  *******************************************************************************/
+  public boolean endTurn()
+    {
+    getCurrentPlayer().score += mTurnScore;
+    System.out.printf("\n%s finishes the turn, scoring %d, earning a total of %d\n",
+                      getCurrentPlayer().name, mTurnScore, getCurrentPlayer().score);
+    
+    mTurnScore = 0;
+    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    
+    if (checkForWinner())
+      return true;
+    
+    mTurn++;
+    return false;
+    }
+  
+  /*******************************************************************************
+  * rollDice */
+  /**
+  * 
+  *******************************************************************************/
+  public boolean rollDice()
+    {
+    int rolledNumber = new Random().nextInt(6) + 1;
+    System.out.printf("and rolled a %d. ", rolledNumber);
+    if (rolledNumber == 1)
       {
-      this.name = name;
+      mTurnScore = 0;
+      return endTurn();
       }
+    
+    mTurnScore += rolledNumber;
+    System.out.printf("Current Turn Total: %d\n", mTurnScore);
+    return startTurn();
+    }
+  
+  /*******************************************************************************
+  * start */
+  /**
+  * 
+  *******************************************************************************/
+  public void start()
+    {
+    while (!startTurn()) {}
+    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    System.out.printf("%s is the winner!\n", getCurrentPlayer().name);
+    System.out.printf(
+        "            Name | Score\n" +
+                    "%16s | %d\n" +
+                    "%16s | %d", mPlayers[0].name, mPlayers[0].score, mPlayers[1].name, mPlayers[1].score);
+    
+    }
+  
+  /*******************************************************************************
+  * startTurn */
+  /**
+  * Player makes decision to roll or hold.
+  *******************************************************************************/
+  public boolean startTurn()
+    {
+    boolean roll;
+    
+    //TODO move this decision to the Player class.
+    if (getCurrentPlayer().human)
+      {
+      System.out.printf("Would you like to \"%s\" or \"%s\"? ", ROLL, HOLD);
+      roll = mInput.next().equalsIgnoreCase(ROLL);
+      }
+    else
+      {
+      //TODO run through the ai.
+      /*------------------------*/
+      /* Computer is "thinking" */
+      /*------------------------*/
+      try { Thread.sleep(2000); }
+      catch (InterruptedException e) { e.printStackTrace(); }
+      
+      roll = getCurrentPlayer().score + mTurnScore < 100;
+      if (mTurnScore >= 10)
+        roll = false;
+      }
+    
+    System.out.printf("%s decided to %s ",
+                      getCurrentPlayer().name, roll ? "roll" : "hold");
+    if (roll) return rollDice();
+    return endTurn();
+    }
+  }
+
+/*******************************************************************************
+* Class: Player */
+/**
+* 
+*******************************************************************************/
+class Player
+  {
+  /*******************************************************************************
+  * Properties
+  *******************************************************************************/
+  /** Player is human flag. */ public boolean human;
+  /** Player's name. */        public String  name;
+  /** Player's total score. */ public int     score;
+  
+  /*******************************************************************************
+  * Constructor */
+  /**
+  * 
+  * 
+  * @param name
+  *******************************************************************************/
+  public Player(String name) { this(name, false); }
+  public Player(String name, boolean human)
+    {
+    this.human = human;
+    this.name  = name;
     }
   }
