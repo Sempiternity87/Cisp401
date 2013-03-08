@@ -1,7 +1,10 @@
 /*******************************************************************************
 * TestSimpleCircle.java
+*===============================================================================
+* @author Chadd Klaus
+* @date   Mar 7, 2013
 *******************************************************************************/
-package class6
+package class6;
 
 /*******************************************************************************
 * Test Simple Circle
@@ -14,20 +17,20 @@ public class TestSimpleCircle
     SimpleCircle circle2 = new SimpleCircle(25);
     SimpleCircle circle3 = new SimpleCircle(125);
     
-    System.out.printf("The area of the circle of radius %d is %d\n", circle1.radius, circle1.getArea());
-    System.out.printf("The area of the circle of radius %d is %d\n", circle2.radius, circle2.getArea());
-    System.out.printf("The area of the circle of radius %d is %d\n", circle3.radius, circle3.getArea());
+    System.out.printf("The area of the circle of radius %f is %f\n", circle1.radius, circle1.getArea());
+    System.out.printf("The area of the circle of radius %f is %f\n", circle2.radius, circle2.getArea());
+    System.out.printf("The area of the circle of radius %f is %f\n", circle3.radius, circle3.getArea());
     }
   }
 
 /*******************************************************************************
-* Simple Circle
-*******************************************************************************/
-public Class SimpleCircle
+ * Class: Simple Circle
+ ******************************************************************************/
+class SimpleCircle
   {
   /*****************************************************************************
-  * Properties
-  *****************************************************************************/
+   * Properties
+   ****************************************************************************/
   public double radius;
   
   /*-----------*/
@@ -39,8 +42,8 @@ public Class SimpleCircle
   public void setRadius(double newRadius) { radius = newRadius; }
   
   /*****************************************************************************
-  * Constructor
-  *****************************************************************************/
-  public SimpleClass() { this(1); }
-  public SimpleClass(double newRadius) { setRadius(newRadius) ; }
+   * Constructor
+   ****************************************************************************/
+  public SimpleCircle() { this(1); }
+  public SimpleCircle(double newRadius) { setRadius(newRadius) ; }
   }
