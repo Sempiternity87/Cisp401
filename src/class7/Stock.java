@@ -30,34 +30,66 @@
 *******************************************************************************/
 package class7;
 
+/*******************************************************************************
+* Stock
+*******************************************************************************/
 public class Stock
   {
   /*****************************************************************************
   * Properties
   *****************************************************************************/
-  protected String mSymbol;
-  protected String mName;
-  protected double mPreviousClosingPrice;
-  protected double mCurrentPrice;
+  /** Symbol. */                 protected String mSymbol;
+  /** Name. */                   protected String mName;
+  /** Previous Closing Price. */ protected double mPreviousClosingPrice;
+  /** Current Price. */          protected double mCurrentPrice;
   
-  /*-----------*/
-  /* Accessors */
-  /*-----------*/
-  
-  public double getChangePercent()
-    {
-    if (mPreviousClosingPrice < mCurrentPrice)         return mPreviousClosingPrice / mCurrentPrice  *  100;
-    if (mCurrentPrice         < mPreviousClosingPrice) return mCurrentPrice         / mPreviousPrice * -100;
-    }
-  
-  public void setPreviousClosePrice(double price) { mPreviousClosingPrice = price; }
-  public void setCurrentPrice      (double price) { mCurrentPrice         = price; }
-  
+  /*****************************************************************************
+  * Constructor
+  *****************************************************************************/
   public Stock(String symbol, String name)
     {
     mSymbol = symbol;
     mName   = name;
     }
   
-  public void printStock() { System.out.printf("%s\t%s\t%.2f", mSymbol, mName, getChangePercent()); }
+  /*****************************************************************************
+  * getChangePercent */
+  /**
+  * Returns the percent change from the previous closing.
+  *****************************************************************************/
+  public double getChangePercent()
+    {
+    return (mPreviousClosingPrice - mCurrentPrice) / mPreviousClosingPrice * 100;
+    }
+  
+  /*****************************************************************************
+  * printStock */
+  /**
+  * Prints out the properties of the stock along with the percentage change of
+  * the price.
+  *****************************************************************************/
+  public void printStock()
+    {
+    System.out.printf("%s\t%s\t%f%%\n", mSymbol, mName, getChangePercent());
+    }
+  
+  /*****************************************************************************
+  * setPreviousClosePrice */
+  /**
+  * Sets {@link #mPreviousClosingPrice}.
+  *****************************************************************************/
+  public void setPreviousClosePrice(double price)
+    {
+    mPreviousClosingPrice = price;
+    }
+  
+  /*****************************************************************************
+  * setCurrentPrice */
+  /**
+  * Sets {@link #mCurrentPrice}.
+  *****************************************************************************/
+  public void setCurrentPrice(double price)
+    {
+    mCurrentPrice = price;
+    }
   }
