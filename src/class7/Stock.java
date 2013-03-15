@@ -1,7 +1,7 @@
 /*******************************************************************************
 * Stock.java
 *===============================================================================
-* Follow the example of the Circle class we say last week. Create a Stock class,
+* Follow the example of the Circle class we saw last week. Create a Stock class,
 * which contains:
 * 
 * - A string variable named symbol containing the stock's symbol.
@@ -32,14 +32,32 @@ package class7;
 
 public class Stock
   {
+  /*****************************************************************************
+  * Properties
+  *****************************************************************************/
+  protected String mSymbol;
+  protected String mName;
+  protected double mPreviousClosingPrice;
+  protected double mCurrentPrice;
   
-  public void setPreviousClosePrice(double price) { }
-  public void setCurrentPrice(double price) {}
+  /*-----------*/
+  /* Accessors */
+  /*-----------*/
+  
+  public double getChangePercent()
+    {
+    if (mPreviousClosingPrice < mCurrentPrice)         return mPreviousClosingPrice / mCurrentPrice  *  100;
+    if (mCurrentPrice         < mPreviousClosingPrice) return mCurrentPrice         / mPreviousPrice * -100;
+    }
+  
+  public void setPreviousClosePrice(double price) { mPreviousClosingPrice = price; }
+  public void setCurrentPrice      (double price) { mCurrentPrice         = price; }
   
   public Stock(String symbol, String name)
     {
-    
+    mSymbol = symbol;
+    mName   = name;
     }
   
-  public void printStock() {}
+  public void printStock() { System.out.printf("%s\t%s\t%.2f", mSymbol, mName, getChangePercent()); }
   }
